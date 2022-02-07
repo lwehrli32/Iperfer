@@ -1,26 +1,50 @@
+import java.io.*;
+import java.net.*;
+
 public class Iperfer{
 	private static String errorMsg = "Error: missing or additional arguments";
 	private static String portErrorMsg = "Error: port number must be in the range 1024 to 65535";
 
 	static class Client{
 		String host;
-		long port;
+		int port;
 		String time;
 	
-		public Client(String host, long port, String time){
+		public Client(String host, int port, String time){
 			System.out.println("Starting client. . .");
 			this.host = host;
 			this.port = port;
 			this.time = time;
+			StartClient();
+		}
+
+		private void StartClient(){
+			try{
+				Socket echoSocket = new Socket(this.host, this.port);
+				PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
+				BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+				BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+			}catch(Exception e){}
 		}
 	}
 
 	static class Server{
-		long port;
+		int port;
 
-		public Server(long port){
+		public Server(int port){
 			System.out.println("Starting server. . .");
 			this.port = port;
+			StartServer();
+		}
+
+		private void StartServer(){
+			try{
+				ServerSocket serverSocket = new ServerSocket(this.port);
+				Socket clientSocket = serverSocket.accept();
+				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			}catch(Exception e){}
+			
 		}
 	}
 	
@@ -53,9 +77,9 @@ public class Iperfer{
 	}
 
 	private static void checkPortNumber(String portNumber){
-		long port = 0;
+		int port = 0;
 		try{
-			port = Long.parseLong(portNumber);
+			port = Integer.parseInt(portNumber);
 		}catch(Exception e){
 			printError(portErrorMsg);
 		}
@@ -71,22 +95,22 @@ public class Iperfer{
 	}
 
 	private static void InitServer(String[] args){
-		long port = 0;
+		int port = 0;
 		
 		try{
-			port = Long.parseLong(args[2]);
+			port = Integer.parseInt(args[2]);
 		}catch(Exception e){}
 
 		Server server = new Server(port);
 	}
 
 	private static void InitClient(String[] args){
-		long port = 0;
+		int port = 0;
 		String host = args[2];
 		String time = args[6];
 
 		try{
-			port = Long.parseLong(args[4]);
+			port = Integer.parseInt(args[4]);
 		}catch(Exception e){}
 
 		Client client = new Client(host, port, time);
