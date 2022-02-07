@@ -1,0 +1,5 @@
+To compile:
+javac Iperfer.java
+
+To run:
+java Iperfer
