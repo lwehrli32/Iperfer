@@ -8,10 +8,9 @@ public class Iperfer{
 	static class Client{
 		String host;
 		int port;
-		String time;
+		int time;
 	
-		public Client(String host, int port, String time){
-			System.out.println("Starting client. . .");
+		public Client(String host, int port, int time){
 			this.host = host;
 			this.port = port;
 			this.time = time;
@@ -25,11 +24,18 @@ public class Iperfer{
 				BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 				BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 				
-				String userInput;
-				while((userInput = stdIn.readLine()) != null){
+				String userInput = "0";
+				long start = System.currentTimeMillis();
+				long end = start;
+				long numBytesSent = 0;
+				while((end / 1000) - (start / 1000) < this.time){
 					out.println(userInput);
-					System.out.println("on client, server said: " + in.readLine());
+					numBytesSent = numBytesSent + userInput.getBytes().length;
+					end = System.currentTimeMillis();
 				}
+
+				numBytesSent = numBytesSent / 1000;
+				System.out.println("sent=" + numBytesSent + " KB");
 
 				in.close();
 				out.close();
@@ -47,7 +53,6 @@ public class Iperfer{
 		int port;
 
 		public Server(int port){
-			System.out.println("Starting server. . .");
 			this.port = port;
 			StartServer();
 		}
@@ -60,14 +65,15 @@ public class Iperfer{
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
 				String inputLine, outputLine;
+				long numBytesRecieved = 0;
 				while((inputLine = in.readLine()) != null){
 					// do server work here
-					System.out.println("on server, Client said: " + inputLine);
-					outputLine = "SERVER RESPONSE";
-					out.println(outputLine);
-					if (inputLine.equals("Bye."))
-						break;
+					// get size of data sent to server
+					numBytesRecieved = numBytesRecieved + inputLine.getBytes().length;
 				}
+
+				numBytesRecieved = numBytesRecieved / 1000;
+				System.out.println("recieved=" + numBytesRecieved + " KB");
 
 				serverSocket.close();
 				in.close();
@@ -78,8 +84,7 @@ public class Iperfer{
 			}
 			
 		}
-	}
-	
+	}	
 
 	public static void main(String[] args){
 		if (args.length <= 0){
@@ -139,10 +144,11 @@ public class Iperfer{
 	private static void InitClient(String[] args){
 		int port = 0;
 		String host = args[2];
-		String time = args[6];
+		int time = 0;
 
 		try{
 			port = Integer.parseInt(args[4]);
+			time = Integer.parseInt(args[6]);
 		}catch(Exception e){}
 
 		Client client = new Client(host, port, time);
