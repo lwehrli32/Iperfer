@@ -24,7 +24,22 @@ public class Iperfer{
 				PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
 				BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 				BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-			}catch(Exception e){}
+				
+				String userInput;
+				while((userInput = stdIn.readLine()) != null){
+					out.println(userInput);
+					System.out.println("on client, server said: " + in.readLine());
+				}
+
+				in.close();
+				out.close();
+				stdIn.close();
+				echoSocket.close();
+
+			}catch(Exception e){
+				System.out.println("Cannot connect to server");
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -43,7 +58,24 @@ public class Iperfer{
 				Socket clientSocket = serverSocket.accept();
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			}catch(Exception e){}
+
+				String inputLine, outputLine;
+				while((inputLine = in.readLine()) != null){
+					// do server work here
+					System.out.println("on server, Client said: " + inputLine);
+					outputLine = "SERVER RESPONSE";
+					out.println(outputLine);
+					if (inputLine.equals("Bye."))
+						break;
+				}
+
+				serverSocket.close();
+				in.close();
+				out.close();
+			}catch(Exception e){
+				System.out.println("Cannot start server");
+				e.printStackTrace();
+			}
 			
 		}
 	}
