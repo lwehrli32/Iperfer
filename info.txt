@@ -2,4 +2,5 @@ To compile:
 javac Iperfer.java
 
 To run:
-java Iperfer
+java Iperfer -s -p 10000
+java Iperfer -c -h localhost -p 10000 -t 3

@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.lang.Math;
 
 public class Iperfer{
 	private static String errorMsg = "Error: missing or additional arguments";
@@ -33,9 +34,10 @@ public class Iperfer{
 					numBytesSent = numBytesSent + userInput.getBytes().length;
 					end = System.currentTimeMillis();
 				}
-
-				numBytesSent = numBytesSent / 1000;
-				System.out.println("sent=" + numBytesSent + " KB");
+				numBytesSent = Math.round(numBytesSent / 1000);
+				float mbsent = numBytesSent / (float) 1000;
+				float mbps = mbsent / (float) this.time;
+				System.out.printf("sent=%d KB rate=%.3f Mbps%n", numBytesSent, mbps);
 
 				in.close();
 				out.close();
@@ -66,14 +68,18 @@ public class Iperfer{
 
 				String inputLine, outputLine;
 				long numBytesRecieved = 0;
+				long start = System.currentTimeMillis() / 1000;
 				while((inputLine = in.readLine()) != null){
 					// do server work here
 					// get size of data sent to server
 					numBytesRecieved = numBytesRecieved + inputLine.getBytes().length;
 				}
-
-				numBytesRecieved = numBytesRecieved / 1000;
-				System.out.println("recieved=" + numBytesRecieved + " KB");
+				long end = System.currentTimeMillis() / 1000;
+				float dur = end - start;
+				numBytesRecieved = Math.round(numBytesRecieved / 1000);
+				float mbrec = numBytesRecieved / (float) 1000;
+				float mbps = mbrec / dur;
+				System.out.printf("recieved=%d KB rate=%.3f Mbps%n", numBytesRecieved, mbps);
 
 				serverSocket.close();
 				in.close();
