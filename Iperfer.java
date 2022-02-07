@@ -1,9 +1,35 @@
-
 public class Iperfer{
 	private static String errorMsg = "Error: missing or additional arguments";
 	private static String portErrorMsg = "Error: port number must be in the range 1024 to 65535";
 
+	static class Client{
+		String host;
+		long port;
+		String time;
+	
+		public Client(String host, long port, String time){
+			System.out.println("Starting client. . .");
+			this.host = host;
+			this.port = port;
+			this.time = time;
+		}
+	}
+
+	static class Server{
+		long port;
+
+		public Server(long port){
+			System.out.println("Starting server. . .");
+			this.port = port;
+		}
+	}
+	
+
 	public static void main(String[] args){
+		if (args.length <= 0){
+			printError(errorMsg);
+		}
+
 		String type = args[0];
 
 		if (type.equals("-c")){
@@ -45,22 +71,24 @@ public class Iperfer{
 	}
 
 	private static void InitServer(String[] args){
+		long port = 0;
 		
+		try{
+			port = Long.parseLong(args[2]);
+		}catch(Exception e){}
+
+		Server server = new Server(port);
 	}
 
 	private static void InitClient(String[] args){
-		
-	}
+		long port = 0;
+		String host = args[2];
+		String time = args[6];
 
-	public class Server {
-		public Server(long port){
+		try{
+			port = Long.parseLong(args[4]);
+		}catch(Exception e){}
 
-		}
-	}
-
-	public class Client {
-		public Client(String host, long port){
-
-		}
+		Client client = new Client(host, port, time);
 	}
 }
