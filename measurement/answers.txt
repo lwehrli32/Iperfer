@@ -1,13 +1,33 @@
 Q2:
-pre
+predictions: the throughput would be the same as in Q1, the latency would be longer because of more linkages
+latency: 80 ms
+throughput: 0.083 Mbps
 
 Q3:
-predictions for pair: it will on average be a little slower than just one request being sent.
-predictions for triples: it will be slower on average than the doubles.
+For both latency and throughput
+predictions for double: it will on average be a little slower than just one request being sent.
+predictions for triple: it will be slower on average than the doubles.
 
 latency
-pairs: it was on average about 161ms
-triples: it was the same as the pairs. average of about 161ms
+double: it was on average about 161ms
+triple: it was the same as the pairs. average of about 161ms
+Response: For latency, seeing as the measurment is blind to which packets are whose. It makes sense that latency would be little effected by the additional pair of hosts.
 
 throughput:
-pairs:
+double: 0.064 Mbps
+triple:0.053 Mbps
+reponse: Since we are now concerned with when a specific packet is delivered, the throughput is effect more 
+
+Q4:
+Predictions:
+For both latency and thoughput we think the results will be the same between number of switches.
+
+latency:
+h1-h4: 160 ms
+h5-h6: 40 ms
+throughput:
+h1-h4: 0.064 Mbps
+h5-h6: 0.062 Mbps
+
+response: We are unsure as to the dramatic difference. We think that because s1 and s4 are more congested with other hosts, they take greater time directing the packets compared to s5 and s6 which only have one host respectively.
+
