@@ -1,0 +1,13 @@
+Q2:
+pre
+
+Q3:
+predictions for pair: it will on average be a little slower than just one request being sent.
+predictions for triples: it will be slower on average than the doubles.
+
+latency
+pairs: it was on average about 161ms
+triples: it was the same as the pairs. average of about 161ms
+
+throughput:
+pairs:
